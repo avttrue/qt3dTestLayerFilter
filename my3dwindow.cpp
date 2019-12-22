@@ -8,10 +8,13 @@
 #include <Qt3DRender/QClearBuffers>
 #include <Qt3DRender/QViewport>
 #include <Qt3DRender/QLayerFilter>
-#include <Qt3DRender/QLayer>
 
 My3DWindow::My3DWindow(QScreen *screen):
-    Qt3DExtras::Qt3DWindow(screen)
+    Qt3DExtras::Qt3DWindow(screen),
+    m_Scene(nullptr),
+    m_Camera(nullptr),
+    m_TransparentLayer(nullptr),
+    m_OpaqueLayer(nullptr)
 {
     m_Scene = new Qt3DCore::QEntity;
     setRootEntity(m_Scene);
@@ -36,11 +39,11 @@ My3DWindow::My3DWindow(QScreen *screen):
     cameraController->setCamera(m_Camera);
 
     // именно в таком порядке: m_OpaqueLayer, m_TransparentLayer
-    m_OpaqueLayer = new Qt3DRender::QLayer;
+    m_OpaqueLayer = new Qt3DRender::QLayer(m_Scene);
     auto opaqueFilter = new Qt3DRender::QLayerFilter(m_Camera);
     opaqueFilter->addLayer(m_OpaqueLayer);
 
-    m_TransparentLayer = new Qt3DRender::QLayer;
+    m_TransparentLayer = new Qt3DRender::QLayer(m_Scene);
     auto transparentFilter = new Qt3DRender::QLayerFilter(m_Camera);
     transparentFilter->addLayer(m_TransparentLayer);
 
@@ -49,8 +52,6 @@ My3DWindow::My3DWindow(QScreen *screen):
 
 void My3DWindow::resizeEvent(QResizeEvent *e)
 {
-    if(!m_Camera) return;
-
     auto camera_aspect = static_cast<float>(e->size().width()) / e->size().height();
     m_Camera->lens()->setPerspectiveProjection(45.0f, camera_aspect, 0.1f, 1000.0f);
 }
