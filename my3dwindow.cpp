@@ -35,13 +35,14 @@ My3DWindow::My3DWindow(QScreen *screen):
     auto cameraController = new Qt3DExtras::QFirstPersonCameraController(m_Scene);
     cameraController->setCamera(m_Camera);
 
-    m_TransparentLayer = new Qt3DRender::QLayer;
-    auto transparentFilter = new Qt3DRender::QLayerFilter(m_Camera);
-    transparentFilter->addLayer(m_TransparentLayer);
-
+    // именно в таком порядке: m_OpaqueLayer, m_TransparentLayer
     m_OpaqueLayer = new Qt3DRender::QLayer;
     auto opaqueFilter = new Qt3DRender::QLayerFilter(m_Camera);
     opaqueFilter->addLayer(m_OpaqueLayer);
+
+    m_TransparentLayer = new Qt3DRender::QLayer;
+    auto transparentFilter = new Qt3DRender::QLayerFilter(m_Camera);
+    transparentFilter->addLayer(m_TransparentLayer);
 
     setActiveFrameGraph(renderSurfaceSelector);
 }
@@ -51,6 +52,8 @@ void My3DWindow::resizeEvent(QResizeEvent *e)
     auto camera_aspect = static_cast<float>(e->size().width()) / e->size().height();
     m_Camera->lens()->setPerspectiveProjection(45.0f, camera_aspect, 0.1f, 1000.0f);
 }
+
+void My3DWindow::keyPressEvent(QKeyEvent *e) { Q_EMIT signalKey(e); }
 
 Qt3DCore::QEntity *My3DWindow::Scene() const { return m_Scene; }
 Qt3DRender::QLayer *My3DWindow::TransparentLayer() const { return m_TransparentLayer; }

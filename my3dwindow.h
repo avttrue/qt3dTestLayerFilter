@@ -6,6 +6,7 @@
 
 class My3DWindow : public Qt3DExtras::Qt3DWindow
 {
+    Q_OBJECT
 public:
     My3DWindow(QScreen *screen = nullptr);
 
@@ -15,12 +16,17 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *e);
+    void keyPressEvent(QKeyEvent *e);
 
 private:
     Qt3DRender::QLayer *m_TransparentLayer;
     Qt3DRender::QLayer *m_OpaqueLayer;
     Qt3DCore::QEntity *m_Scene;
     Qt3DRender::QCamera *m_Camera;
+
+   Q_SIGNALS:
+       void signalKey(QKeyEvent *e);
+
 };
 
 #endif // MY3DWINDOW_H
