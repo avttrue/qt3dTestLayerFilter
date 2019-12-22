@@ -29,6 +29,7 @@ My3DWindow::My3DWindow(QScreen *screen):
     m_Camera->setPosition(QVector3D(0.0f, 0.0f, 100.0f));
     m_Camera->setViewCenter(QVector3D(0.0f, 0.0f, 0.0f));
 
+    cameraSelector->setCamera(m_Camera);
     auto cameraController = new Qt3DExtras::QFirstPersonCameraController(m_Scene);
     cameraController->setCamera(m_Camera);
 
