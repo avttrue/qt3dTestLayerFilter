@@ -24,12 +24,14 @@ My3DWindow::My3DWindow(QScreen *screen):
 
     auto viewport = new Qt3DRender::QViewport(renderSurfaceSelector);
     auto cameraSelector = new Qt3DRender::QCameraSelector(viewport);
+
     m_Camera = new Qt3DRender::QCamera(cameraSelector);
     m_Camera->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
     m_Camera->setPosition(QVector3D(0.0f, 0.0f, 100.0f));
     m_Camera->setViewCenter(QVector3D(0.0f, 0.0f, 0.0f));
 
     cameraSelector->setCamera(m_Camera);
+
     auto cameraController = new Qt3DExtras::QFirstPersonCameraController(m_Scene);
     cameraController->setCamera(m_Camera);
 
