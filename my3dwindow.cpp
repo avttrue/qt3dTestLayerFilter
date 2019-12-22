@@ -49,6 +49,8 @@ My3DWindow::My3DWindow(QScreen *screen):
 
 void My3DWindow::resizeEvent(QResizeEvent *e)
 {
+    if(!m_Camera) return;
+
     auto camera_aspect = static_cast<float>(e->size().width()) / e->size().height();
     m_Camera->lens()->setPerspectiveProjection(45.0f, camera_aspect, 0.1f, 1000.0f);
 }
