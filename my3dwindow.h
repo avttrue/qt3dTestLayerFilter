@@ -25,7 +25,7 @@ private:
     Qt3DRender::QLayer *m_OpaqueLayer;    
 
    Q_SIGNALS:
-       void signalKey(QKeyEvent *e);
+       void signalPressKey(QKeyEvent *e);
 
 };
 
