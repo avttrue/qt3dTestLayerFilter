@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 
     auto sphere1 = new Qt3DCore::QEntity(window.Scene());
     auto sphere2 = new Qt3DCore::QEntity(window.Scene());
+
     QObject::connect(sphere1, &QObject::destroyed, [=](){ qDebug() << "sphere1 destroyed"; });
     QObject::connect(sphere2, &QObject::destroyed, [=](){ qDebug() << "sphere2 destroyed"; });
 
@@ -24,10 +25,10 @@ int main(int argc, char *argv[])
     auto transform2 = new Qt3DCore::QTransform;
     transform2->setTranslation(QVector3D(-5.0f, 0.0f, -10.0f));
 
-    auto material1 = new Qt3DExtras::QPhongMaterial;
+    auto material1 = new Qt3DExtras::QPhongAlphaMaterial;
     material1->setAmbient(Qt::blue);
 
-    auto material2 = new Qt3DExtras::QPhongAlphaMaterial;
+    auto material2 = new Qt3DExtras::QPhongMaterial;
     material2->setAmbient(Qt::red);
 
     auto spheremesh1 = new Qt3DExtras::QSphereMesh;
@@ -43,12 +44,12 @@ int main(int argc, char *argv[])
     sphere1->addComponent(material1);
     sphere1->addComponent(spheremesh1);
     sphere1->addComponent(transform1);
-    sphere1->addComponent(window.OpaqueLayer());
+    sphere1->addComponent(window.TransparentLayer());
 
     sphere2->addComponent(material2);
     sphere2->addComponent(spheremesh2);
     sphere2->addComponent(transform2);
-    sphere2->addComponent(window.TransparentLayer());
+    sphere2->addComponent(window.OpaqueLayer());
 
     auto func = [=](QKeyEvent *e)
     {

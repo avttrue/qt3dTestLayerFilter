@@ -16,11 +16,11 @@ My3DWindow::My3DWindow(QScreen *screen):
     m_TransparentLayer(nullptr),
     m_OpaqueLayer(nullptr)
 {
-    m_Scene = new Qt3DCore::QEntity;    
+    m_Scene = new Qt3DCore::QEntity;
     setRootEntity(m_Scene);
     QObject::connect(m_Scene, &QObject::destroyed, [=](){ qDebug() << "Scene destroyed"; });
 
-    auto renderSurfaceSelector = new Qt3DRender::QRenderSurfaceSelector(m_Scene);
+    auto renderSurfaceSelector = new Qt3DRender::QRenderSurfaceSelector;
     renderSurfaceSelector->setSurface(this);
     QObject::connect(renderSurfaceSelector, &QObject::destroyed, [=](){ qDebug() << "renderSurfaceSelector destroyed"; });
 
@@ -29,7 +29,7 @@ My3DWindow::My3DWindow(QScreen *screen):
     clearBuffers->setClearColor(Qt::gray);
     QObject::connect(clearBuffers, &QObject::destroyed, [=](){ qDebug() << "clearBuffers destroyed"; });
 
-    auto viewport = new Qt3DRender::QViewport(renderSurfaceSelector);    
+    auto viewport = new Qt3DRender::QViewport(renderSurfaceSelector);
     auto cameraSelector = new Qt3DRender::QCameraSelector(viewport);
     QObject::connect(viewport, &QObject::destroyed, [=](){ qDebug() << "viewport destroyed"; });
     QObject::connect(cameraSelector, &QObject::destroyed, [=](){ qDebug() << "cameraSelector destroyed"; });
@@ -43,19 +43,19 @@ My3DWindow::My3DWindow(QScreen *screen):
     QObject::connect(m_Camera, &QObject::destroyed, [=](){ qDebug() << "Camera destroyed"; });
     cameraSelector->setCamera(m_Camera);
 
-    auto cameraController = new Qt3DExtras::QFirstPersonCameraController(m_Scene);    
+    auto cameraController = new Qt3DExtras::QFirstPersonCameraController(m_Scene);
     cameraController->setCamera(m_Camera);
     QObject::connect(cameraController, &QObject::destroyed, [=](){ qDebug() << "cameraController destroyed"; });
 
     // именно в таком порядке: m_OpaqueLayer, m_TransparentLayer
-    m_OpaqueLayer = new Qt3DRender::QLayer(m_Scene);    
-    auto opaqueFilter = new Qt3DRender::QLayerFilter(m_Camera);    
+    m_OpaqueLayer = new Qt3DRender::QLayer;
+    auto opaqueFilter = new Qt3DRender::QLayerFilter(m_Camera);
     opaqueFilter->addLayer(m_OpaqueLayer);
     QObject::connect(opaqueFilter, &QObject::destroyed, [=](){ qDebug() << "opaqueFilter destroyed"; });
     QObject::connect(m_OpaqueLayer, &QObject::destroyed, [=](){ qDebug() << "OpaqueLayer destroyed"; });
 
-    m_TransparentLayer = new Qt3DRender::QLayer(m_Scene);    
-    auto transparentFilter = new Qt3DRender::QLayerFilter(m_Camera);    
+    m_TransparentLayer = new Qt3DRender::QLayer;
+    auto transparentFilter = new Qt3DRender::QLayerFilter(m_Camera);
     transparentFilter->addLayer(m_TransparentLayer);
     QObject::connect(m_TransparentLayer, &QObject::destroyed, [=](){ qDebug() << "TransparentLayer destroyed"; });
     QObject::connect(transparentFilter, &QObject::destroyed, [=](){ qDebug() << "transparentFilter destroyed"; });
