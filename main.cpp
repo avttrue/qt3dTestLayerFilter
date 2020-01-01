@@ -16,9 +16,6 @@ int main(int argc, char *argv[])
     auto sphere1 = new Qt3DCore::QEntity(window.Scene());
     auto sphere2 = new Qt3DCore::QEntity(window.Scene());
 
-    QObject::connect(sphere1, &QObject::destroyed, [=](){ qDebug() << "sphere1 destroyed"; });
-    QObject::connect(sphere2, &QObject::destroyed, [=](){ qDebug() << "sphere2 destroyed"; });
-
     auto transform1 = new Qt3DCore::QTransform;
     transform1->setTranslation(QVector3D(5.0f, 0.0f, -10.0f));
 
@@ -65,7 +62,6 @@ int main(int argc, char *argv[])
         qDebug() << transform2->translation();
     };
     QObject::connect(&window, &My3DWindow::signalPressKey, func);
-    QObject::connect(&window, &QObject::destroyed, [=](){ qDebug() << "My3DWindow destroyed"; });
 
     window.show();
     return application.exec();
