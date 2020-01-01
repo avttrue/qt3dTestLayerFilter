@@ -8,7 +8,7 @@
 #include <Qt3DRender/QClearBuffers>
 #include <Qt3DRender/QViewport>
 #include <Qt3DRender/QLayerFilter>
-#include <Qt3DExtras/QForwardRenderer>
+
 
 My3DWindow::My3DWindow(QScreen *screen):
     Qt3DExtras::Qt3DWindow(screen),
@@ -20,7 +20,7 @@ My3DWindow::My3DWindow(QScreen *screen):
     m_Scene = new Qt3DCore::QEntity;
     setRootEntity(m_Scene);
 
-    auto renderSurfaceSelector = new Qt3DRender::QRenderSurfaceSelector(defaultFrameGraph());
+    auto renderSurfaceSelector = new Qt3DRender::QRenderSurfaceSelector;
     renderSurfaceSelector->setSurface(this);
 
     auto viewport = new Qt3DRender::QViewport(renderSurfaceSelector);
